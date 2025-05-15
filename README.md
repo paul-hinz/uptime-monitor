@@ -7,9 +7,7 @@ Ein kleiner Uptime-Monitor in Python & Flask als Beispiel für automatisierte CI
 - Sendet regelmäßig Anfragen an definierte URLs
 - Meldet, ob die Seiten erreichbar sind
 - In Docker verpackt
-- Tests via Pytest und GitHub Actions
-
-![Tests](https://github.com/paul-hinz/uptime-monitor/actions/workflows/test.yml/badge.svg)
+- Tests via Pytest und GitHub Actions ![Tests](https://github.com/paul-hinz/uptime-monitor/actions/workflows/test.yml/badge.svg)
 
 ## Setup
 
