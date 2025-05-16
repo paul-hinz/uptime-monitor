@@ -1,0 +1,36 @@
+name: Deploy to EB
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: Install EBCLI
+      run: |
+        pip install --upgrade pip
+        pip install awsebcli
+
+    - name: Configure AWS 
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1 
+
+    - name: Deploy to EB
+      run: |
+        eb init uptime-monitor --platform "Docker running on 64bit Amazon Linux 2023" --region eu-central-1
+        eb use uptime-monitor-env
+        eb deploy
