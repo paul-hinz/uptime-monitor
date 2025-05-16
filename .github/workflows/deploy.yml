@@ -17,10 +17,13 @@ jobs:
       with:
         python-version: 3.12
 
-    - name: Install EBCLI
+    - name: Install zip & Terraform
       run: |
-        pip install --upgrade pip
-        pip install awsebcli
+        sudo apt update
+        sudo apt install -y zip unzip
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+        sudo apt update && sudo apt install terraform -y
 
     - name: Configure AWS 
       uses: aws-actions/configure-aws-credentials@v3
@@ -29,11 +32,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1 
 
-    - name: Deploy to EB
+    - name: Create zip
       run: |
-        eb init uptime-monitor --platform "Docker running on 64bit Amazon Linux 2023" --region eu-central-1
-        eb use uptime-monitor-env
-        eb deploy
+        zip -r uptime-monitor.zip Dockerfile app.py requirements.txt
 
-    - name: Show URL
-      run: eb status | grep CNAME
+    - name: Run Terraform
+      working-directory: ./infra
+      env:
+        TF_VAR_app_name: "uptime-monitor"
+        TF_VAR_aws_region: "eu-central-1"
+      run: |
+        terraform init
+        terraform apply -auto-approve
