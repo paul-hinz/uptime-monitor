@@ -23,6 +23,7 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <h1>Uptime Monitor</h1>
+    <h1> </h1>
     <table>
         <tr><th>URL</th><th>Status</th></tr>
         {% for url, status in statuses.items() %}

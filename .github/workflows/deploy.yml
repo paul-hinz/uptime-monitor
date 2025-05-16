@@ -34,3 +34,6 @@ jobs:
         eb init uptime-monitor --platform "Docker running on 64bit Amazon Linux 2023" --region eu-central-1
         eb use uptime-monitor-env
         eb deploy
+
+    - name: Show URL
+      run: eb status | grep CNAME
