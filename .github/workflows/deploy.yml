@@ -1,4 +1,4 @@
-name: Deploy to EB
+name: Test and Deploy to EB
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       run: docker run uptime-monitor-test pytest
 
   deploy:
-    need: test
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
