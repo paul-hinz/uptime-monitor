@@ -29,18 +29,22 @@ def check_url(url):
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
-    if request.method == "POST":
-        url = request.form["url"]
-        try:
-            response = requests.get(url, timeout=5)
-            status = "UP" if response.ok else "DOWN"
-            code = response.status_code
-        except requests.RequestException:
-            status = "DOWN"
-            code = "N/A"
 
-        result = {"url": url, "status": status, "code": code}
-        history.insert(0, result)  # neueste zuerst
+    if not history:
+        for url in URLS_TO_CHECK:
+            history.insert(0, check_url(url))
+
+
+    if request.method == "POST":
+        user_input = request.form["url"]
+
+        if not user_input.startswith(("http://", "https://")):
+            url = "https://" + user_input
+        else:
+            url = user_input
+
+        result = check_url(url)
+        history.insert(0, result)
 
     return render_template("index.html", result=result, history=history[:10])
 
