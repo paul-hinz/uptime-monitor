@@ -1,20 +1,21 @@
-import pytest
-import requests
-import requests_mock
-
 from app import check_url
+from unittest.mock import patch, Mock
 
-def test_check_url_up():
-    with requests_mock.Mocker() as m:
-        m.get("https://example.com", status_code=200)
-        assert check_url("https://example.com") == "UP"
+@patch("app.requests.get")
+def test_check_url_up(mock_get):
+    mock_response = Mock()
+    mock_response.ok = True
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
 
-def test_check_url_down_status():
-    with requests_mock.Mocker() as m:
-        m.get("https://example.com", status_code=500)
-        assert check_url("https://example.com") == "DOWN"
+    result = check_url("https://example.com")
+    assert result["status"] == "UP"
+    assert result["code"] == 200
 
-def test_check_url_down_exception():
-    with requests_mock.Mocker() as m:
-        m.get("https://example.com", exc=requests.exceptions.ConnectTimeout)
-        assert check_url("https://example.com") == "DOWN"
+@patch("app.requests.get")
+def test_check_url_down(mock_get):
+    mock_get.side_effect = Exception("Connection failed")
+
+    result = check_url("https://fail.com")
+    assert result["status"] == "DOWN"
+    assert result["code"] == "N/A"

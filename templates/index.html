@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Uptime Monitor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+
+    h1 {
+      color: #84a680;
+    }
+
+    form {
+      margin-bottom: 2rem;
+    }
+
+    input[type="url"] {
+      padding: 0.5rem;
+      width: 300px;
+      background-color: #1e1e1e;
+      border: 1px solid #555;
+      color: white;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #6bad63;
+      border: none;
+      color: #121212;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    .up {
+      color: #00e676;
+      font-weight: bold;
+    }
+
+    .down {
+      color: #ff5252;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Uptime Monitor</h1>
+
+  <form action="/" method="post">
+    <label for="url">Neue URL prüfen:</label>
+    <input type="url" id="url" name="url" placeholder="https://example.com" required />
+    <button type="submit">Prüfen</button>
+  </form>
+
+  {% if result %}
+    <p>
+      Ergebnis: <span class="{{ 'up' if result.status == 'UP' else 'down' }}">{{ result.url }} ist {{ result.status }}</span>
+    </p>
+  {% endif %}
+
+  {% if history %}
+    <h2>Verlauf</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in history %}
+        <tr>
+          <td>{{ entry.url }}</td>
+          <td class="{{ 'up' if entry.status == 'UP' else 'down' }}">{{ entry.status }}</td>
+          <td>{{ entry.code }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</body>
+</html>
