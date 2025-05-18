@@ -14,7 +14,7 @@ def test_index_get(client):
     assert b"Uptime Monitor" in response.data
 
 @patch("app.requests.get")
-def test_index_post(client, mock_get):
+def test_index_post(mock_get, client):
     mock_response = Mock()
     mock_response.ok = True
     mock_response.status_code = 200
