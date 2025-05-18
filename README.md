@@ -2,7 +2,9 @@
 
 Ein kleiner Uptime-Monitor in Python & Flask als Beispiel für automatisierte CI/CD Pipeline
 
-![Tests](https://github.com/paul-hinz/uptime-monitor/actions/workflows/deploy.yml/badge.svg) &nbsp;&nbsp; Currently live on: http://3.64.200.96/
+![Tests](https://github.com/paul-hinz/uptime-monitor/actions/workflows/deploy.yml/badge.svg) &nbsp;&nbsp; 
+
+Currently live on: http://3.64.200.96/
 
 
 ## Features
