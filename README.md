@@ -4,7 +4,7 @@ Ein kleiner Uptime-Monitor in Python & Flask als Beispiel für automatisierte CI
 
 ![Tests](https://github.com/paul-hinz/uptime-monitor/actions/workflows/deploy.yml/badge.svg) &nbsp;&nbsp; 
 
-Currently live on: http://3.64.200.96/
+AWS Server currently not live on: [...] 
 
 
 ## Features
